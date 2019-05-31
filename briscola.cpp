@@ -6,7 +6,6 @@
 
 using namespace std;
 
-//random_device rd;     // only used once to initialise (seed) engine
 
 struct Card {
     int numero;
@@ -40,12 +39,8 @@ Card pescaCarta(const Card mazzo[], const int totCards, int* indiciCartePescate,
     }
 
     while (true) {
-        // prendo un indice random
-        int randIndex = (rand() % totCards);
 
-        //mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-        //uniform_int_distribution<int> uni(0, totCards); // guaranteed unbiased
-        // int randIndex = uni(rng) % totCards;
+        int randIndex = (rand() % totCards);
 
         // se primo ciclo > esegui l'if
         // se randIndex non è un num random già visto in passato > esegui l'if
