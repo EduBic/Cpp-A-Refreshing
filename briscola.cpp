@@ -155,8 +155,8 @@ int main() {
 
     Card briscola = theDeck.drawCard();
     cout << "DEBUG briscola: " << briscola.print() << endl;
-    
-    for (int i = 0; i < player1._maxCards; ++i) {
+
+    for (int i = 0; i < Player::MAX_CARDS; ++i) {
         player1.addCard(theDeck.drawCard(), i);
         player2.addCard(theDeck.drawCard(), i);
     }

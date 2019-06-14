@@ -9,6 +9,9 @@ class Player {
 
 public:
 
+    // static: it means that the member it's shared between the instances (objects of type Player)
+    static const int MAX_CARDS = 3;
+
     // constructor
     Player(string iId) {
         _id = iId;
@@ -22,7 +25,7 @@ public:
     void printPlayerCards() {
         cout << "Gioca il Giocatore " << _id << endl;
         
-        for (int i = 0; i < _maxCards; ++i) {
+        for (int i = 0; i < MAX_CARDS; ++i) {
             if (_cards[i].numero != -1) {
                 cout << "Carta: " << i  << "  " << _cards[i].print() << endl;
             } else {
@@ -78,13 +81,10 @@ public:
         return _score;
     }
 
-    const int _maxCards = 3;
-
-
 private:
     string _id;
 
-    Card _cards[3];
+    Card _cards[MAX_CARDS];
 
     int _score = 0;
     int _indexCardOnTable = -1;
