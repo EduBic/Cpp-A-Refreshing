@@ -74,6 +74,10 @@ public:
         _score += iIncrement;
     }
 
+    int getScore() const {
+        return _score;
+    }
+
     const int _maxCards = 3;
 
 

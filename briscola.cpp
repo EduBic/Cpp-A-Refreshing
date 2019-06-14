@@ -231,9 +231,9 @@ int main() {
         theDeck.printDEBUG();
     }
 
-    if (player1._score > player2._score) {
+    if (player1.getScore() > player2.getScore()) {
         cout << endl << "Vince Giocatore 1" << endl;
-    } else if (player1._score == player2._score) {
+    } else if (player1.getScore() == player2.getScore()) {
         cout << endl << "Pareggio" << endl;
     } else {
         cout << endl << "Vince Giocatore 2" << endl;
