@@ -32,9 +32,6 @@ class Card {
 // py = &z <- ERROR
 
 public:
-    // Fields
-    int numero;
-    char seme;
 
     // Methods
     int getPoint() const {
@@ -57,6 +54,9 @@ public:
         return std::to_string(numero) + '-' + seme;
     }
 
-private:
+public:
+    // Fields
+    int numero;
+    char seme;
 
 };

@@ -11,7 +11,6 @@
 using namespace std;
 
 // TODO:
-// - Score of players doesn't work
 // - Refactor whoWin... function
 
 enum GiocatoreType {
@@ -21,52 +20,43 @@ enum GiocatoreType {
 
 
 // Function
-void whoWinAndComputeScore(const char iBriscola, const char iBriscolaMinor, 
-                    const Card & iPlayer1, const Card & iPlayer2,
-                    GiocatoreType & oWhoWin, int & oScoreGiocatore1, int & oScoreGiocatore2) {
+void computeWhoWin(const char iBriscola, const char iBriscolaMinor, 
+                    const Card & iCardPlayer1, const Card & iCardPlayer2,
+                    GiocatoreType & oWhoWin) {
 
-        int numCardPlayer1      = iPlayer1.numero;
-        char seedCardPlayer1    = iPlayer1.seme;
-        int numCardPlayer2      = iPlayer2.numero;
-        char seedCardPlayer2    = iPlayer2.seme;
+        int numCardPlayer1      = iCardPlayer1.numero;
+        char seedCardPlayer1    = iCardPlayer1.seme;
+        int numCardPlayer2      = iCardPlayer2.numero;
+        char seedCardPlayer2    = iCardPlayer2.seme;
 
         // Cases briscola
         if (seedCardPlayer1 == iBriscola && seedCardPlayer2 != iBriscola) {
             oWhoWin = PlayerOne;
-            
-            oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
         }
         else if (seedCardPlayer2 == iBriscola && seedCardPlayer1 != iBriscola) {
             oWhoWin = PlayerTwo;
-            oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
         }
         else if (seedCardPlayer1 == iBriscola && seedCardPlayer2 == iBriscola) {
 
             if (numCardPlayer1 == 1) {
                 oWhoWin = PlayerOne;
-                oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
             else if (numCardPlayer2 == 1) {
                 oWhoWin = PlayerTwo;
-                oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
             else if (numCardPlayer1 == 3) {
                 oWhoWin = PlayerOne;
-                oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
             else if (numCardPlayer2 == 3) {
                 oWhoWin = PlayerTwo;
-                oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
             else if (numCardPlayer1 > numCardPlayer2 && 
                     numCardPlayer1 != 1 && numCardPlayer1 != 3 && 
                     numCardPlayer2 != 1 && numCardPlayer2 != 3) {
                 oWhoWin = PlayerOne;
-                oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
             else {
                 oWhoWin = PlayerTwo;
-                oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
         } 
         else { // nessuno ha la briscola
@@ -74,39 +64,31 @@ void whoWinAndComputeScore(const char iBriscola, const char iBriscolaMinor,
             // Casi con la briscola minor
             if (seedCardPlayer1 == iBriscolaMinor && seedCardPlayer2 != iBriscolaMinor) {
                 oWhoWin = PlayerOne;
-                oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
             else if (seedCardPlayer2 == iBriscolaMinor && seedCardPlayer1 != iBriscolaMinor) {
                 oWhoWin = PlayerTwo;
-                oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
             }
             else if (seedCardPlayer1 == iBriscolaMinor && seedCardPlayer2 == iBriscolaMinor) {
 
                 if (numCardPlayer1 == 1) {
                     oWhoWin = PlayerOne;
-                    oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
                 }
                 else if (numCardPlayer2 == 1) {
                     oWhoWin = PlayerTwo;
-                    oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
                 }
                 else if (numCardPlayer1 == 3) {
                     oWhoWin = PlayerOne;
-                    oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
                 }
                 else if (numCardPlayer2 == 3) {
                     oWhoWin = PlayerTwo;
-                    oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
                 }
                 else if (numCardPlayer1 > numCardPlayer2 && 
                         numCardPlayer1 != 1 && numCardPlayer1 != 3 && 
                         numCardPlayer2 != 1 && numCardPlayer2 != 3) {
                     oWhoWin = PlayerOne;
-                    oScoreGiocatore1 += iPlayer1.getPoint() + iPlayer2.getPoint();
                 }
                 else {
                     oWhoWin = PlayerTwo;
-                    oScoreGiocatore2 += iPlayer1.getPoint() + iPlayer2.getPoint();
                 }
             }
         }
@@ -156,8 +138,6 @@ int main() {
     // const int totCards = 40;
     // Card mazzo[totCards];
 
-    Deck theDeck;
-
     const int numeriSize = 10;
     // Asso, 2, 3, 4, 5, 6, 7, fante, cavallo, re
     const int numeri[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -165,13 +145,11 @@ int main() {
     const int semiSize = 4;
     const char semi[] = {'D', 'C', 'B', 'S'};
 
-    theDeck.initDeck(numeriSize, numeri, semi);
+    Deck theDeck(numeriSize, numeri, semi);
 
 
-    Player player1;
-    player1._id = "1";
-    Player player2;
-    player2._id = "2";
+    Player player1("1");
+    Player player2("2");
 
     // Assegnazione delle carte ai giocatori
 
@@ -182,7 +160,7 @@ int main() {
         player1.addCard(theDeck.drawCard(), i);
         player2.addCard(theDeck.drawCard(), i);
     }
-    cout << "DEBUG numCartePescate: " << theDeck._numCartePescate << endl << endl;
+    // cout << "DEBUG numCartePescate: " << theDeck._numCartePescate << endl << endl;
 
      // Default player one begin
     GiocatoreType whoWin = PlayerOne;
@@ -220,17 +198,15 @@ int main() {
 
         // Assert: cartaIndexPlayer1 != -1 && cartaIndexPlayer2 != -1
 
-        whoWinAndComputeScore(briscola.seme, briscolaMinor, 
-            cartaIndexPlayer1, cartaIndexPlayer2, 
-            whoWin, player1._score, player2._score);
+        computeWhoWin(briscola.seme, briscolaMinor, 
+            cartaIndexPlayer1, cartaIndexPlayer2, whoWin);
 
-        cout << "Vince Giocatore " << whoWin << endl;
-        cout << "Punteggio Giocatore 1: " << player1._score << endl;
-        cout << "Punteggio Giocatore 2: " << player2._score << endl;
-        cout << endl;
+        // Compute score turn and
+        int scoreTurn = cartaIndexPlayer1.getPoint() + cartaIndexPlayer2.getPoint();
 
-        // Draw a card for both players
+        // Draw new card for both players and assign score turn
         if (whoWin == PlayerOne) {
+            player1.incrementScore(scoreTurn);
             player1.drawNewCard(theDeck.drawCard());
             if (manoNum == 16) {
                 player2.drawNewCard(briscola);
@@ -238,6 +214,7 @@ int main() {
                 player2.drawNewCard(theDeck.drawCard());
             }
         } else if (whoWin == PlayerTwo) {   // whoWin != 1 && whoWin == 2
+            player2.incrementScore(scoreTurn);
             player2.drawNewCard(theDeck.drawCard());
             if (manoNum == 16) {
                 player1.drawNewCard(briscola);
@@ -245,6 +222,11 @@ int main() {
                 player1.drawNewCard(theDeck.drawCard());
             }
         }
+
+        cout << "Vince Giocatore " << whoWin << endl;
+        player1.printScore();
+        player2.printScore();
+        cout << endl;
 
         theDeck.printDEBUG();
     }

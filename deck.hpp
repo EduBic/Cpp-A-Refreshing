@@ -11,19 +11,18 @@ using std::endl;
 class Deck {
 
 public:
-
-    // Fields
-
-    Card _cards[40];
-    int _totCards = 40;
-
-    int _indexesTakenCards[40];
-    int _numCartePescate;   // TODO: to english
-
     // Methods
 
-    void initDeck(const int numeriSize, const int* numeri, const char* semi) {
-        // cout << "InitDeck" << endl;
+    // 1 case: No constructors defined
+    // C++ adds the default one Deck() {}
+
+    // 2 case: at least one constructor defined
+    // no automatic default constructor
+
+
+    // constructor
+    Deck(const int numeriSize, const int* numeri, const char* semi) {
+        cout << "DEBUG: Deck: constructor" << endl;
 
         int numIndex = 0;
         int semeIndex = 0;
@@ -102,5 +101,14 @@ public:
         }
         cout << endl;
     }
+
+private:
+    // Fields
+
+    Card _cards[40];
+    int _totCards = 40;
+
+    int _indexesTakenCards[40];
+    int _numCartePescate;   // TODO: to english
 
 };

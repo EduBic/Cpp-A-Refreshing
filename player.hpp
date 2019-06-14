@@ -3,31 +3,30 @@
 
 class Card;
 
+using namespace std;
+
 class Player {
 
 public:
-    std::string _id;
 
-    Card _cards[3];
-    const int _maxCards = 3;
-
-    int _score = 0;
-    int _indexCardOnTable = -1;
+    // constructor
+    Player(string iId) {
+        _id = iId;
+    }
 
     // Methods
-
     void addCard(Card card, int index) {
         _cards[index] = card;
     }
 
     void printPlayerCards() {
-        std::cout << "Gioca il Giocatore " << _id << std::endl;
+        cout << "Gioca il Giocatore " << _id << endl;
         
         for (int i = 0; i < _maxCards; ++i) {
             if (_cards[i].numero != -1) {
-                std::cout << "Carta: " << i  << "  " << _cards[i].print() << std::endl;
+                cout << "Carta: " << i  << "  " << _cards[i].print() << endl;
             } else {
-                std::cout << "Carta non valida: " << i << std::endl;
+                cout << "Carta non valida: " << i << endl;
             }
         }
     }
@@ -36,32 +35,54 @@ public:
         bool validCard1 = false;
         
         while (!validCard1) {
-            std::cout << "Seleziona la tua carta:" << std::endl;
-            std::cin >> _indexCardOnTable;
-            if (_cards[_indexCardOnTable].numero == -1) {
-                std::cout << "WARNING Carta non Valida" << std::endl;
+            cout << "Seleziona la tua carta:" << endl;
+            cin >> _indexCardOnTable;
+            if (_indexCardOnTable < 0 || _indexCardOnTable > 2 || _cards[_indexCardOnTable].numero == -1) {
+                cout << "WARNING Carta non Valida" << endl;
             } else {
                 validCard1 = true;
             }
         }
-        std::cout << "Giocatore " << _id 
+        cout << "Giocatore " << _id 
                   << " mette carta: " << _cards[_indexCardOnTable].print() 
-                  << std::endl << std::endl;
+                  << endl << endl;
 
+        
+        Card aReturnCard = _cards[_indexCardOnTable];
+        
         Card aCard;
         aCard.numero = -1;
         aCard.seme = '-';
         _cards[_indexCardOnTable] = aCard;
 
-        return _cards[_indexCardOnTable]; 
+        return aReturnCard;        
     }
 
     void drawNewCard(Card iCard) {
         if (_indexCardOnTable == -1)
-            std::cout << "DEBUG error in indexCardOnTable" << std::endl; 
+            cout << "DEBUG error in indexCardOnTable" << endl; 
 
         _cards[_indexCardOnTable] = iCard;
         _indexCardOnTable = -1;
     }
+
+    void printScore() const {
+        cout << "Punteggio Giocatore "<< _id << ": " << _score << endl;
+    }
+
+    void incrementScore(int iIncrement) {
+        _score += iIncrement;
+    }
+
+    const int _maxCards = 3;
+
+
+private:
+    string _id;
+
+    Card _cards[3];
+
+    int _score = 0;
+    int _indexCardOnTable = -1;
 
 };
