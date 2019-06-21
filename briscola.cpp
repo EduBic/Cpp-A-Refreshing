@@ -145,6 +145,11 @@ int main() {
     const int semiSize = 4;
     const char semi[] = {'D', 'C', 'B', 'S'};
 
+    // RAM              Bytes
+    // | Card[40]   | => (1 + 8) * 40 = 360
+    // | int        | => 8
+    // | int[40]    | => 320
+    // | int        | => 8
     Deck theDeck(numeriSize, numeri, semi);
 
 
@@ -153,7 +158,7 @@ int main() {
 
     // Assegnazione delle carte ai giocatori
 
-    Card briscola = theDeck.drawCard();
+    Card briscola(theDeck.drawCard());
     cout << "DEBUG briscola: " << briscola.print() << endl;
 
     for (int i = 0; i < Player::MAX_CARDS; ++i) {
@@ -162,7 +167,7 @@ int main() {
     }
     // cout << "DEBUG numCartePescate: " << theDeck._numCartePescate << endl << endl;
 
-     // Default player one begin
+    // Default player one begin
     GiocatoreType whoWin = PlayerOne;
 
     // inizio partita
@@ -183,12 +188,14 @@ int main() {
 
             // Select card other player
             player2.printPlayerCards();
-            cartaIndexPlayer2 = player2.selectCard();
+            // IA play a card
+            cartaIndexPlayer2 = player2.selectAutoCard(cartaIndexPlayer1, briscola.seme);
 
         } else if (whoWin == PlayerTwo) {
             // Start Player
             player2.printPlayerCards();
-            cartaIndexPlayer2 = player2.selectCard();
+            // IA gioca una carta
+            cartaIndexPlayer2 = player2.selectAutoCard(Card(-1, '-'), briscola.seme);
             briscolaMinor = cartaIndexPlayer2.seme;
 
             // Second Player

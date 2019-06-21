@@ -1,5 +1,9 @@
 
+#include <iostream>
 #include <string>
+
+using namespace std;
+
 /*
 Equivalent to:
 
@@ -33,6 +37,23 @@ class Card {
 
 public:
 
+    // implicitly implemented C++ if you want
+    Card() {
+        // cout << "DEBUG: Card: constructor" << endl;
+    }                // default constructor
+    
+    Card(int number, char seed) {
+        numero = number;
+        seme = seed;
+    }
+
+    Card(const Card & val) {
+        // cout << "DEBUG: Card: copy constructor" << endl;
+        
+        numero = val.numero;
+        seme = val.seme;
+    }     // copy constructor
+
     // Methods
     int getPoint() const {
         if (numero == 1) {
@@ -52,6 +73,10 @@ public:
 
     std::string print() const {
         return std::to_string(numero) + '-' + seme;
+    }
+
+    bool isValid() const {
+        return numero != -1 || seme != '-';
     }
 
 public:

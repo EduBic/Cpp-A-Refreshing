@@ -27,7 +27,7 @@ public:
         int numIndex = 0;
         int semeIndex = 0;
 
-        for (int i = 0; i < _totCards; ++i) {
+        for (int i = 0; i < TOT_CARDS; ++i) {
             Card aCard;
             
             if (numIndex >= numeriSize) {
@@ -43,12 +43,14 @@ public:
             _cards[i] = aCard;
         }
 
-        _indexesTakenCards[_totCards];
-        for (int i = 0; i < _totCards; ++i) {
+        _indexesTakenCards[TOT_CARDS];
+        for (int i = 0; i < TOT_CARDS; ++i) {
             _indexesTakenCards[i] = -1;
         }
 
         _numCartePescate = 0;
+
+        cout << "DEBUG: Deck: finish constructor" << endl;
     }
 
     bool isContainedInto(const int randInt, const int oldRandIndexArr[], 
@@ -67,7 +69,7 @@ public:
     Card drawCard() {
         // cout << "DrawCard" << endl;
 
-        if (_numCartePescate == _totCards) {
+        if (_numCartePescate == TOT_CARDS) {
             Card empty;
             empty.numero = -1;
             empty.seme = '-';
@@ -77,7 +79,7 @@ public:
 
         while (true) {
 
-            int randIndex = (rand() % _totCards);
+            int randIndex = (rand() % TOT_CARDS);
 
             // se primo ciclo > esegui l'if
             // se randIndex non è un num random già visto in passato > esegui l'if
@@ -105,10 +107,11 @@ public:
 private:
     // Fields
 
-    Card _cards[40];
-    int _totCards = 40;
+    static const int TOT_CARDS = 40;
+    
+    Card _cards[TOT_CARDS];
 
-    int _indexesTakenCards[40];
+    int _indexesTakenCards[TOT_CARDS];
     int _numCartePescate;   // TODO: to english
 
 };
