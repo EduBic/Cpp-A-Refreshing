@@ -1,6 +1,11 @@
 # Briscola-ToyApp
 C++ implementation of Italian card game Briscola just for refreshing C++
 
+## Compile and Run
+
+`g++ .\briscola.cpp`
+`.\a.exe`
+
 
 ## Syllabus
 
