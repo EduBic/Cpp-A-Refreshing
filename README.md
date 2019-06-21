@@ -26,4 +26,9 @@ C++ implementation of Italian card game Briscola just for refreshing C++
     - Custom
 - static keyword
 
+- Review constructor and copy constructor
+- Introduce CPU player algorithm
+    - Get lower/higher value from an array
+    - Manage states
+
 TODO:
