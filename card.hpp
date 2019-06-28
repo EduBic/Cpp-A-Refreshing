@@ -37,6 +37,14 @@ class Card {
 
 public:
 
+    static Card getEmptyCard() {
+        Card empty;
+        empty.numero = -1;
+        empty.seme = '-';
+        
+        return empty;
+    }
+
     // implicitly implemented C++ if you want
     Card() {
         // cout << "DEBUG: Card: constructor" << endl;

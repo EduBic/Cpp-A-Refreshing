@@ -150,7 +150,7 @@ int main() {
     // | int        | => 8
     // | int[40]    | => 320
     // | int        | => 8
-    Deck theDeck(numeriSize, numeri, semi);
+    Deck theDeck(numeriSize, numeri, semi, 40);
 
 
     Player player1("1");

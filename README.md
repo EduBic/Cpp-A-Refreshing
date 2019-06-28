@@ -36,4 +36,7 @@ C++ implementation of Italian card game Briscola just for refreshing C++
     - Get lower/higher value from an array
     - Manage states
 
+- Build my container (basic array)
+- Use template class
+
 TODO:

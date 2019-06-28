@@ -67,6 +67,43 @@ public:
 
     Card selectAutoCard(const Card & opponentCard, const char briscola) {
         // IA player
+        int intelligence = 0;
+
+
+        switch (intelligence)
+        {
+        case 0:
+            this->selectAutoBase(opponentCard, briscola);
+            break;
+
+        case 1:
+            //this->selectAutoCardEduard(opponentCard, briscola);
+            break;
+
+        default:
+            this->selectAutoBase(opponentCard, briscola);
+            break;
+        }
+
+        // print 
+        cout << "Giocatore " << _id 
+                << " mette carta: " << _cards[_indexCardOnTable].print() 
+                <<  " index = " << _indexCardOnTable
+                << endl << endl;
+
+        Card aReturnCard = _cards[_indexCardOnTable];
+        
+        // remove from player hand
+        Card aCard;
+        aCard.numero = -1;
+        aCard.seme = '-';
+        _cards[_indexCardOnTable] = aCard;
+
+        return aReturnCard; 
+    }
+
+    void selectAutoBase(const Card & opponentCard, const char briscola) {
+        // IA player
         char aBriscolaMinor = opponentCard.seme;
 
         // if player 1 play point IA play an highter card if possible, 
@@ -75,7 +112,7 @@ public:
 
         if (opponentCard.seme == briscola) {
 
-            if (opponentCard.getPoint > 0) {
+            if (opponentCard.getPoint() > 0) {
                 _indexCardOnTable = getHigherCard(briscola);
             }
 
@@ -110,23 +147,8 @@ public:
             }
             
         }
-
-        
-
-        cout << "Giocatore " << _id 
-                << " mette carta: " << _cards[_indexCardOnTable].print() 
-                <<  " index = " << _indexCardOnTable
-                << endl << endl;
-
-        Card aReturnCard = _cards[_indexCardOnTable];
-        
-        Card aCard;
-        aCard.numero = -1;
-        aCard.seme = '-';
-        _cards[_indexCardOnTable] = aCard;
-
-        return aReturnCard; 
     }
+
 
     void drawNewCard(Card iCard) {
         if (_indexCardOnTable == -1)

@@ -3,7 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include "card.hpp"
+#include "cardArray.hpp"
+#include "myArray.hpp"
 
 using std::cout;
 using std::endl;
@@ -21,13 +22,13 @@ public:
 
 
     // constructor
-    Deck(const int numeriSize, const int* numeri, const char* semi) {
+    Deck(const int numeriSize, const int* numeri, const char* semi, const int totCards) : _cards(totCards), _indexesTakenCards(totCards) {
         cout << "DEBUG: Deck: constructor" << endl;
 
         int numIndex = 0;
         int semeIndex = 0;
 
-        for (int i = 0; i < TOT_CARDS; ++i) {
+        for (int i = 0; i < _cards.size(); ++i) {
             Card aCard;
             
             if (numIndex >= numeriSize) {
@@ -40,12 +41,11 @@ public:
 
             aCard.seme = semi[semeIndex];
             
-            _cards[i] = aCard;
+            _cards.add(aCard, i);
         }
 
-        _indexesTakenCards[TOT_CARDS];
-        for (int i = 0; i < TOT_CARDS; ++i) {
-            _indexesTakenCards[i] = -1;
+        for (int i = 0; i < _indexesTakenCards.size(); ++i) {
+            _indexesTakenCards.add(-1, i);
         }
 
         _numCartePescate = 0;
@@ -53,12 +53,11 @@ public:
         cout << "DEBUG: Deck: finish constructor" << endl;
     }
 
-    bool isContainedInto(const int randInt, const int oldRandIndexArr[], 
-                        const int oldRandIndexArrSize) {
+    bool isContainedInto(const int randInt) {
     
-        for (int i = 0; i < oldRandIndexArrSize; ++i) {
+        for (int i = 0; i < _indexesTakenCards.size(); ++i) {
             // cout << randInt << " old RandomIndex arr: " << oldRandIndexArr << endl; 
-            if (randInt == oldRandIndexArr[i]) {
+            if (randInt == _indexesTakenCards.get(i)) {
                 return true;
             }
         }
@@ -69,27 +68,23 @@ public:
     Card drawCard() {
         // cout << "DrawCard" << endl;
 
-        if (_numCartePescate == TOT_CARDS) {
-            Card empty;
-            empty.numero = -1;
-            empty.seme = '-';
-            
-            return empty;
+        if (_numCartePescate == _indexesTakenCards.size()) {
+            return Card::getEmptyCard();
         }
 
         while (true) {
 
-            int randIndex = (rand() % TOT_CARDS);
+            int randIndex = (rand() % _indexesTakenCards.size());
 
             // se primo ciclo > esegui l'if
             // se randIndex non è un num random già visto in passato > esegui l'if
-            if (!isContainedInto(randIndex, _indexesTakenCards, _numCartePescate)) {
+            if (!isContainedInto(randIndex)) {
                 // salvare il numero random già usato
-                _indexesTakenCards[_numCartePescate] = randIndex;
+                _indexesTakenCards.add(_numCartePescate, randIndex);
                 _numCartePescate++;
 
                 // cout << "Pesca carta: " << mazzo[randIndex].numero << '-' << mazzo[randIndex].seme << ' ' << randIndex << endl;
-                return _cards[randIndex];
+                return _cards.get(randIndex);
             }
         }
     }
@@ -98,20 +93,18 @@ public:
         cout << "DEBUG numCartePescate: " << _numCartePescate << endl;
         cout << "DEBUG indiciCartePescate: ";
         for (int i = 0; i < _numCartePescate; ++i) {
-            int index = _indexesTakenCards[i];
-            cout << _cards[index].print() << "  ";
+            int index = _indexesTakenCards.get(i);
+            cout << _cards.get(index).print() << "  ";
         }
         cout << endl;
     }
 
 private:
     // Fields
-
-    static const int TOT_CARDS = 40;
     
-    Card _cards[TOT_CARDS];
+    MyArray<Card> _cards;
 
-    int _indexesTakenCards[TOT_CARDS];
+    MyArray<int> _indexesTakenCards;
     int _numCartePescate;   // TODO: to english
 
 };
