@@ -102,7 +102,7 @@ public:
 private:
     // Fields
     
-    MyArray<Card> _cards;
+    MyArray<Card> _cards;   // => type MyArray di Card
 
     MyArray<int> _indexesTakenCards;
     int _numCartePescate;   // TODO: to english
