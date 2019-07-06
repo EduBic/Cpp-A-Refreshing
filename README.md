@@ -1,13 +1,6 @@
-# Briscola-ToyApp
-C++ implementation of Italian card game Briscola just for refreshing C++
+Little and pretty programs made for learn all the shades of the C++ programming language.
 
-## Compile and Run
-
-`g++ .\briscola.cpp`
-`.\a.exe`
-
-
-## Syllabus
+# Syllabus
 
 - The C++ programming language
 - primitive types: int, char
@@ -39,4 +32,5 @@ C++ implementation of Italian card game Briscola just for refreshing C++
 - Build my container (basic array)
 - Use template class
 
-TODO:
+## Usuful Links
+- http://pythontutor.com/cpp.html#mode=edit
