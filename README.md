@@ -32,5 +32,15 @@ Little and pretty programs made for learn all the shades of the C++ programming 
 - Build my container (basic array)
 - Use template class
 
+# Apps
+
+## Briscola-ToyApp
+C++ implementation of Italian card game Briscola just for refreshing C++
+
+### Compile and Run
+
+`g++ .\briscola.cpp`
+`.\a.exe`
+
 ## Usuful Links
 - http://pythontutor.com/cpp.html#mode=edit
