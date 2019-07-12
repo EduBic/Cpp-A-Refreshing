@@ -1,52 +1,93 @@
 #include <iostream>
 
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
-void seeBoard(int aFunction[]) {
+void printBoardCell(const int * iBoard, const int increm, const char * iLastChars) {
+  char cPlayer1 = 'x';
+  char cPlayer2 = 'o';
+
+  cout << " ";
+  if (iBoard[increm] == -1) {
+    cout << cPlayer1;
+  } else if (iBoard[increm] == -2) {
+    cout << cPlayer2;
+  } else {
+    cout << iBoard[increm];
+  }
+  cout << iLastChars;
+}
+
+void seeBoard(const int iBoard[]) {
   for (int increm = 0; increm < 9; increm++) {
-    char cPlayer1 = 'x';
-    char cPlayer2 = 'o';
-    cout << " ";
-    // doppie funzioni come concatenare per semplificare la lettura?(probabile poca voglia di farlo al momento causa l'errore mentale)
-    if (aFunction[increm] == -1) {
-      cout << cPlayer1;
-    } else if (aFunction[increm] == -2) {
-      cout << cPlayer2;
-    } else {
-      cout << aFunction[increm];
-    }
-    cout << " |";
+    
+    printBoardCell(iBoard, increm, " |");
     increm++;
-    cout << " ";
-    if (aFunction[increm] == -1) {
-      cout << cPlayer1;
-    } else if (aFunction[increm] == -2) {
-      cout << cPlayer2;
-    } else {
-      cout << aFunction[increm];
-    }
-    cout << " |";
+    printBoardCell(iBoard, increm, " |");
     increm++;
-    cout << " ";
-    if (aFunction[increm] == -1) {
-      cout << cPlayer1;
-    } else if (aFunction[increm] == -2) {
-      cout << cPlayer2;
-    } else {
-      cout << aFunction[increm];
-    }
-    cout << " " << endl;
+    printBoardCell(iBoard, increm, " \n");
   }
 }
 
+  
+int checkIfPlayerWin(const int iBoard[], const int iPlayer) {
+  if (iBoard[0] == iPlayer && iBoard[1] == iPlayer && iBoard[2] == iPlayer)
+  {
+    return iPlayer;
+  }
+  else if (iBoard[0] == iPlayer && iBoard[4] == iPlayer && iBoard[8] == iPlayer)
+  {
+    return iPlayer;
+  }
+  else if (iBoard[0] == iPlayer && iBoard[3] == iPlayer && iBoard[6] == iPlayer)
+  {
+    return iPlayer;
+  }
+  else if (iBoard[1] == iPlayer && iBoard[4] == iPlayer && iBoard[7] == iPlayer)
+  {
+    return iPlayer;
+  }
+  else if (iBoard[3] == iPlayer && iBoard[4] == iPlayer && iBoard[5] == iPlayer)
+  {
+    return iPlayer;
+  }
+  else if (iBoard[2] == iPlayer && iBoard[4] == iPlayer && iBoard[6] == iPlayer)
+  {
+    return iPlayer;
+  }
+  else if (iBoard[6] == iPlayer && iBoard[7] == iPlayer && iBoard[8] == iPlayer)
+  {
+    return iPlayer;
+  } 
+  else if (iBoard[2] == iPlayer && iBoard[5] == iPlayer && iBoard[8] == iPlayer)
+  {
+    return iPlayer;
+  }
+  else {
+    return 0;
+  }
+}
+
+void getInputPlayer(int * ioBoard, const int iPlayer) {
+  cout << "Player " << -iPlayer << " turn" << endl;
+
+  int selection;
+  cin >> selection;
+  while (ioBoard[selection] == iPlayer || ioBoard[selection] == iPlayer 
+        || selection >= 9 || selection < 0) 
+  {
+    cout << "Occupied select another" << endl;
+    cin >> selection;
+  }
+  
+  ioBoard[selection] = iPlayer;
+}
+
+
 
 int main() {
-  // To do:
-  // - Determinate who start (default player 1 for easy win programming XD) and turns
-  // - Set "how to play"
-  // - Tell "who win"
 
   int iPlayer1 = -1;
   int iPlayer2 = -2;
@@ -54,69 +95,45 @@ int main() {
 
   // Preparing Array for Empty Board
   int aBoard[9];
-  // Debug
-  // acBoard = ' '; per inizializzare tutto l'array a quel carattere?
   for (int iArray = 0; iArray < 9; iArray++) {
     aBoard[iArray] = iArray;
   }
 
   // Print board
-  //  1 | 2 | 3
+  //  0 | 1 | 2
   // -----------
-  //  4 | 5 | 6
+  //  3 | 4 | 5
   // -----------
-  //  7 | 8 | 9
+  //  6 | 7 | 8
   seeBoard(aBoard);
-
-
-  // Aggiungere array per board, e modo per escludere le caselle occuppate nelle succ
-  // giocate, e modo per far visualizzare simbolo del giocatore in caselle occupate.
+  
+  // Cout board with cell "selection" cover with an X and O alternate
+  // Example: cin >> 5
+  // Board update (turn == 0):
+  //   |   |
+  //   | x |
+  //   |   |
+  // Next: cin >> 9
+  // Board update (turn == 1):
+  //   |   |
+  //   | x |
+  //   |   | o
   for (int turn = 0; turn < 9; ++turn) {
 
-    // Player 1
-    cout << "Player 1 turn" << endl;
-    int selection;
-    cin >> selection;
-    while (aBoard[selection] == iPlayer1 || aBoard[selection] == iPlayer2 || selection >= 9 || selection < 0) {
-      cout << "Occupied select another" << endl;
-      cin >> selection;
-    }
+    int thePlayer = turn % 2 == 0 ? iPlayer1 : iPlayer2;
 
-    aBoard[selection] = iPlayer1;
+    getInputPlayer(aBoard, thePlayer);
 
     seeBoard(aBoard);
 
-    // Player 2
-    cout << "Player 2 turn" << endl;
-    cin >> selection;
-    while (aBoard[selection] == iPlayer1 || aBoard[selection] == iPlayer2 || selection >= 9 || selection < 0) {
-      cout << "Occupied select another" << endl;
-      cin >> selection;
+    if (checkIfPlayerWin(aBoard, thePlayer) < 0) {
+      cout << "Player " << -thePlayer << " WIN"<< endl;
+      break;
     }
-
-    aBoard[selection] = iPlayer2;
-
-    // Print board
-    seeBoard(aBoard);
-
-    // TODO: cout board with cell "selection" cover with an X and O alternate
-    // Example: cin >> 5
-    // Board update (turn == 0):
-    //   |   |
-    //   | x |
-    //   |   |
-    // Next: cin >> 9
-    // Board update (turn == 1):
-    //   |   |
-    //   | x |
-    //   |   | o
 
   }
 
-
+  cout << endl << "Finish" << endl;
 }
-// da fare stasera:
-// -aggiungere variabile fissa (penso sia static ma non sono sicuro) per i player in modo da avere il simbolo associato in ogni parte del programma
-// -semplificare alcune parti uguali funzioni ecc
+// TODO:
 // -implementare eventuale player vs cpu (magari come modalità aggiuntiva)
-// -fix bug of board with hight number
