@@ -128,7 +128,18 @@ void getInputAi(int* ioBoard, const int iPlayer) {
 
 struct Board { 
   char arr[9]; 
-  int size = 9;
+  int size = -1;
+
+
+  bool isFull() {
+    for (int i = 0; i < size; ++i) {
+      if (arr[i] == '-') {
+        return false;
+      }
+    }
+
+    return true;
+  }
 };
 
 void printBis(const Board& iBoard, const int layer, const int i) {
@@ -197,9 +208,9 @@ void testingTreeRec(char iPlayer, Board ioBoard, int layer, long int& counter) {
       printBis(ioBoard, layer, i);  
       counter++;
 
-      // ====>
+      // ====> go down
       testingTreeRec(iPlayer == 'x' ? 'o' : 'x', ioBoard, layer + 1, counter);
-      // <====
+      // <==== go up
       ioBoard.arr[i] = '-';
     }
   }
@@ -209,10 +220,18 @@ void testingTreeRec(char iPlayer, Board ioBoard, int layer, long int& counter) {
 // iNumStates = 4
 // ? | ?
 // ? | ?
+// BUG: attualmente salvo nello stack solamente la Board
+// mentre lo stack dovrebbe salvare lo stato della partita in un determinato 
+// turno di gioco, per farlo necessito di:
+//    - board del turno
+//    - player del turno
+//    - layer == turno
+// TODO: fix the BUG => define a struct that it is the state of the game
 void testingTree(char iPlayer, Board ioBoard, const int iNumStates) {
 
   Board stack[9] = {};
   int top = -1;
+  int levelCounter = 0;
 
   // init push
   top++;
@@ -220,6 +239,7 @@ void testingTree(char iPlayer, Board ioBoard, const int iNumStates) {
 
   while (top != -1) { // while stack not empty
 
+    // pop from stack
     Board innerBoard = stack[top];
     top--;
 
@@ -228,16 +248,21 @@ void testingTree(char iPlayer, Board ioBoard, const int iNumStates) {
         // change states
         innerBoard.arr[x] = iPlayer;
         
-        printBis(innerBoard, -1, x);    // main operation
+        printBis(innerBoard, levelCounter, x);    // main operation
 
         // push
-        top++;
-        stack[top] = innerBoard;
+        if (!innerBoard.isFull()) {
+          top++;
+          stack[top] = innerBoard;
+        }
 
-        innerBoard.arr[x] = '-'; 
+        innerBoard.arr[x] = '-';
       }
     }
+
+    levelCounter++;
     
+    // BUG in this line of code => delete
     iPlayer = iPlayer == 'x' ? 'o' : 'x';
   }
 }
@@ -294,6 +319,8 @@ int main() {
 
   // Board theBoard({'-', '-', '-', '-', '-', '-', '-', '-', '-',});
   Board theBoard({'-', '-', '-', '-'});
+  theBoard.size = 4;
+
   testingTree('x', theBoard, 4);
 
   // int aNumStates = 4;

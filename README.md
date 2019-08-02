@@ -31,6 +31,9 @@ Little and pretty programs made for learn all the shades of the C++ programming 
 
 - Build my container (basic array)
 - Use template class
+- Recursion for traversing the tree of states of tic-tac-toe
+- Stack data structure (pop and push operation)
+    - Using iteration instead of recursion
 
 # Apps
 
