@@ -1,14 +1,14 @@
-
+#include <string>
 #include <iostream>
 #include <bitset>
+#include "Fraction.hpp"
 
 using namespace std;
 
-int main () {
-
+void testInt() {
     // const int cpuBits = 42;
     bitset<8> aBitSet(-2);
-    bitset<8> aNegBitSet(string("11111111"));
+    bitset<8> aNegBitSet("11111111");
 
     // Naturali: 0 1 2 3 4 5 ... (interi positivi)
 
@@ -64,10 +64,23 @@ int main () {
     //        => min neg int
     //           256 - 127 - 1 = 128
 
-    cout << aBitSet.to_string() << endl;
-    cout << aBitSet.to_ullong() << endl;
-    cout << aNegBitSet.to_ullong() << endl;
+    // cout << aBitSet.to_string() << endl;
+    // cout << aBitSet.to_ullong() << endl;
+    // cout << aNegBitSet.to_ullong() << endl;
+}
 
+int main () {
+
+    // represent the fraction 5 / 2
+    Fraction aFraction(5,2);
+
+    Fraction aSecondFraction(7, 2);
+
+    // 5 / 2 + 7 / 2 = (5 + 7) / 2 = 13 / 2
+    Fraction res = aFraction.add(aSecondFraction);
+
+    cout << "Numerator " << aFraction.numerator << endl;
+    cout << "Denominator " << aFraction.denominator << endl; 
 }
 // -2147483648
 // 2147483647
