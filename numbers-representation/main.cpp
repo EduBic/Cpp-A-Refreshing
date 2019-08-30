@@ -69,18 +69,26 @@ void testInt() {
     // cout << aNegBitSet.to_ullong() << endl;
 }
 
+Fraction sumFraction(Fraction value1, Fraction value2)
+{
+    return Fraction(value1.numerator + value2.numerator, value1.denominator);
+}
+
 int main () {
 
     // represent the fraction 5 / 2
-    Fraction aFraction(5,2);
+    Fraction aFraction(5, 4);
 
-    Fraction aSecondFraction(7, 2);
+    // Fraction aSecondFraction(7, 2);
+
+    Fraction aThirdFraction(3, 5);
 
     // 5 / 2 + 7 / 2 = (5 + 7) / 2 = 13 / 2
-    Fraction res = aFraction.add(aSecondFraction);
+    Fraction res = aFraction.add(aThirdFraction);
+    Fraction res = aFraction + aThirdFraction;
 
-    cout << "Numerator " << aFraction.numerator << endl;
-    cout << "Denominator " << aFraction.denominator << endl; 
+    cout << "Numerator " << res.numerator << endl;
+    cout << "Denominator " << res.denominator << endl; 
 }
 // -2147483648
 // 2147483647
