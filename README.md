@@ -35,6 +35,17 @@ Little and pretty programs made for learn all the shades of the C++ programming 
 - Stack data structure (pop and push operation)
     - Using iteration instead of recursion
 
+## What is the "plus plus" in C++?
+- classes
+- constructurs
+- destructors
+- default parameters
+- overloading
+- inheritance
+- virtual function
+- references
+
+
 # Apps
 
 ## Briscola-ToyApp
