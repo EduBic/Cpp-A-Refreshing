@@ -25,6 +25,15 @@ public:
         return Fraction(num, MCD);
     }
 
+    Fraction subtract(const Fraction& aFractionToSubtract)
+    {
+        int MCD = maxComDiv(denominator, aFractionToSubtract.denominator);
+        int num = (numerator * MCD / denominator) 
+                  - (aFractionToSubtract.numerator * MCD / aFractionToSubtract.denominator);
+        
+        return Fraction(num, MCD);
+    }
+
     Fraction multiply(const Fraction& aFractionToMultiply) const
     {
 

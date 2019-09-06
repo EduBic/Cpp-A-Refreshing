@@ -1,14 +1,14 @@
 #include <string>
 #include <iostream>
-#include <bitset>
+//#include <bitset>
 #include "Fraction.hpp"
 
 using namespace std;
 
 void testInt() {
     // const int cpuBits = 42;
-    bitset<8> aBitSet(-2);
-    bitset<8> aNegBitSet("11111111");
+    //bitset<8> aBitSet(-2);
+    //bitset<8> aNegBitSet("11111111");
 
     // Naturali: 0 1 2 3 4 5 ... (interi positivi)
 
@@ -84,8 +84,8 @@ int main () {
     Fraction aThirdFraction(3, 5);
 
     // 5 / 2 + 7 / 2 = (5 + 7) / 2 = 13 / 2
-    Fraction res = aFraction.add(aThirdFraction);
-    Fraction res = aFraction + aThirdFraction;
+    Fraction res = aFraction.subtract(aThirdFraction);
+    // Fraction res = aFraction + aThirdFraction;
 
     cout << "Numerator " << res.numerator << endl;
     cout << "Denominator " << res.denominator << endl; 
