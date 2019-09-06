@@ -2,6 +2,7 @@
 #include <iostream>
 //#include <bitset>
 #include "Fraction.hpp"
+#include <fstream>
 
 using namespace std;
 
@@ -76,19 +77,52 @@ Fraction sumFraction(Fraction value1, Fraction value2)
 
 int main () {
 
-    // represent the fraction 5 / 2
-    Fraction aFraction(5, 4);
+    fstream myStream;
+    myStream.open("data.txt", ios::in);
 
-    // Fraction aSecondFraction(7, 2);
+    // TODO 0: how to understand if end of a file is reached
+    while (!myStream.end) {
 
-    Fraction aThirdFraction(3, 5);
+        // TODO 1: read a Fraction from a file
+        // decide a formatting in the txt for a fraction
+        int num;
+        myStream >> num;
+        int den;
+        myStream >> den;
+        Fraction aFirstFraction(num, den);
 
-    // 5 / 2 + 7 / 2 = (5 + 7) / 2 = 13 / 2
-    Fraction res = aFraction.divide(aThirdFraction);
-    // Fraction res = aFraction + aThirdFraction;
+        int num;
+        myStream >> num;
+        int den;
+        myStream >> den;
+        Fraction aSecondFraction(num, den);
 
-    cout << "Numerator " << res.numerator << endl;
-    cout << "Denominator " << res.denominator << endl; 
+        // TODO 2: read which operation from a file
+        string operation;
+        myStream >> operation;
+
+        if (operation == "multiply") {
+            // Fraction testRes = frac.multiply(otherFrac);
+        }
+        else {
+
+        }
+
+        int num;
+        myStream >> num;
+        int den;
+        myStream >> den;
+        Fraction expectedResult(num, den);
+
+        // TODO 3 Compare
+        // testRes.compare(expectedResult); <= return bool
+    
+        // TODO 4: cout test fail or is all ok
+
+    } 
+    
+    //cout << "Numerator " << res.numerator << endl;
+    //cout << "Denominator " << res.denominator << endl; 
 }
 // -2147483648
 // 2147483647
