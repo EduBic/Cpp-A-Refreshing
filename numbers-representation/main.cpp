@@ -84,7 +84,7 @@ int main () {
     Fraction aThirdFraction(3, 5);
 
     // 5 / 2 + 7 / 2 = (5 + 7) / 2 = 13 / 2
-    Fraction res = aFraction.subtract(aThirdFraction);
+    Fraction res = aFraction.divide(aThirdFraction);
     // Fraction res = aFraction + aThirdFraction;
 
     cout << "Numerator " << res.numerator << endl;

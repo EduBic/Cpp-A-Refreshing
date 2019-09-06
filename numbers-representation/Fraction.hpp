@@ -36,7 +36,18 @@ public:
 
     Fraction multiply(const Fraction& aFractionToMultiply) const
     {
+        int resNumerator = numerator * aFractionToMultiply.numerator;
+        int resDenominator = denominator * aFractionToMultiply.denominator;
+        
+        return simplify(resNumerator, resDenominator);
+    }
 
+    Fraction divide(const Fraction& aFractionThatDivide) const
+    {
+        int resNumerator = numerator * aFractionThatDivide.denominator;
+        int resDenominator = denominator * aFractionThatDivide.numerator;
+        
+        return simplify(resNumerator, resDenominator);
     }
 
     int maxComDiv(const int v1, const int v2) const
@@ -61,6 +72,35 @@ public:
         }
     }
 
+    static int minComMul(const int v1, const int v2)
+    {
+        int mcm = 2;
+        while (mcm <= v1 && mcm <= v2 )
+        {
+            if (v1 % mcm == 0 && v2 % mcm == 0)
+            {
+                return mcm;
+            }
+            else
+            {
+                mcm++;
+            }
+        }
+        return 1;
+    }
+    
+    static Fraction simplify(int resNumerator, int resDenominator)
+    {
+        int mcm = minComMul(resNumerator, resDenominator);
+        while (mcm != 1)
+        {
+            resNumerator = resNumerator / mcm;
+            resDenominator = resDenominator / mcm;
+            mcm = minComMul(resNumerator, resDenominator);
+        }
+        return Fraction(resNumerator, resDenominator);
+    }
+
     static Fraction sumFraction(Fraction value1, Fraction value2)
     {
         return Fraction(value1.numerator + value2.numerator, value1.denominator);
@@ -69,5 +109,4 @@ public:
     int numerator;
     int denominator;
 
-private:
 };
