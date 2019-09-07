@@ -81,8 +81,7 @@ int main () {
     myStream.open("data.txt", ios::in);
 
     // TODO 0: how to understand if end of a file is reached
-    while (!myStream.end) {
-
+    while (myStream.good()) {
         // TODO 1: read a Fraction from a file
         // decide a formatting in the txt for a fraction
         int num;
@@ -90,37 +89,52 @@ int main () {
         int den;
         myStream >> den;
         Fraction aFirstFraction(num, den);
+        cout << "First Fraction Numerator is " << aFirstFraction.numerator << " Denominator is " << aFirstFraction.denominator << endl;
 
-        int num;
+        //int num;
         myStream >> num;
-        int den;
+        //int den;
         myStream >> den;
         Fraction aSecondFraction(num, den);
+        cout << "Second Fraction Numerator is " << aSecondFraction.numerator << " Denominator is " << aSecondFraction.denominator << endl;
 
         // TODO 2: read which operation from a file
         string operation;
         myStream >> operation;
-
+        cout << "The Operation is " << operation << endl;
+        Fraction res;
         if (operation == "multiply") {
             // Fraction testRes = frac.multiply(otherFrac);
+            res = aFirstFraction.multiply(aSecondFraction);
+            cout << "Res Numerator is " << res.numerator << " Denominator is " << res.denominator << endl;
         }
         else {
-
+            //divide(aSecondFraction);
+            res = aFirstFraction.divide(aSecondFraction);
+            cout << "Res Numerator is " << res.numerator << " Denominator is " << res.denominator << endl;
         }
 
-        int num;
+        //int num;
         myStream >> num;
-        int den;
+        //int den;
         myStream >> den;
         Fraction expectedResult(num, den);
+        cout << "Expected Res Numerator is " << expectedResult.numerator << " Denominator is " << expectedResult.denominator << endl;
 
         // TODO 3 Compare
         // testRes.compare(expectedResult); <= return bool
-    
+        if (expectedResult.numerator == res.numerator && expectedResult.denominator == res.denominator)
+        {
+            cout << "IS ALL OK" << endl;
+        }
+        else
+        {
+            cout << "TEST FAIL!!!" << endl;
+        }
         // TODO 4: cout test fail or is all ok
 
     } 
-    
+    cout << "END OF FILE REACHED";
     //cout << "Numerator " << res.numerator << endl;
     //cout << "Denominator " << res.denominator << endl; 
 }
