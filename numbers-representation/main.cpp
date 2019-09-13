@@ -85,16 +85,13 @@ int main () {
         // TODO 1: read a Fraction from a file
         // decide a formatting in the txt for a fraction
         int num;
-        myStream >> num;
         int den;
-        myStream >> den;
+
+        myStream >> num >> den;
         Fraction aFirstFraction(num, den);
         cout << "First Fraction Numerator is " << aFirstFraction.numerator << " Denominator is " << aFirstFraction.denominator << endl;
 
-        //int num;
-        myStream >> num;
-        //int den;
-        myStream >> den;
+        myStream >> num >> den;
         Fraction aSecondFraction(num, den);
         cout << "Second Fraction Numerator is " << aSecondFraction.numerator << " Denominator is " << aSecondFraction.denominator << endl;
 
@@ -104,26 +101,21 @@ int main () {
         cout << "The Operation is " << operation << endl;
         Fraction res;
         if (operation == "multiply") {
-            // Fraction testRes = frac.multiply(otherFrac);
             res = aFirstFraction.multiply(aSecondFraction);
             cout << "Res Numerator is " << res.numerator << " Denominator is " << res.denominator << endl;
         }
         else {
-            //divide(aSecondFraction);
             res = aFirstFraction.divide(aSecondFraction);
             cout << "Res Numerator is " << res.numerator << " Denominator is " << res.denominator << endl;
         }
 
-        //int num;
-        myStream >> num;
-        //int den;
-        myStream >> den;
+        myStream >> num >> den;
         Fraction expectedResult(num, den);
         cout << "Expected Res Numerator is " << expectedResult.numerator << " Denominator is " << expectedResult.denominator << endl;
 
-        // TODO 3 Compare
-        // testRes.compare(expectedResult); <= return bool
-        if (expectedResult.numerator == res.numerator && expectedResult.denominator == res.denominator)
+        // TODO 3: Compare
+        // TODO 4: cout test fail or is all ok
+        if (expectedResult.compare(res))
         {
             cout << "IS ALL OK" << endl;
         }

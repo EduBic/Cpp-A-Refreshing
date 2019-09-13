@@ -12,12 +12,6 @@ public:
 
     Fraction add(const Fraction& aFractionToSum) const 
     {
-        // this => aFraction
-        // aFractionToSum => aSecondFraction
-        
-        // this->numerator OR numerator
-        // aFractionToSum.numerator
-
         int MCD = maxComDiv(denominator, aFractionToSum.denominator);
         int num = (aFractionToSum.numerator * MCD / aFractionToSum.denominator )
                   + (numerator * MCD / denominator);
@@ -87,6 +81,11 @@ public:
             }
         }
         return 1;
+    }
+    
+    bool compare(Fraction res)
+    {
+        return numerator == res.numerator && denominator == res.denominator;
     }
     
     static Fraction simplify(int resNumerator, int resDenominator)
