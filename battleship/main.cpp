@@ -23,8 +23,34 @@ int main()
 
     // Displacement ships
 
-    Board board;
-    board.print();
-    board.insertShip(0, 1, 0, 3);
-    board.print();
+    Board boardPlayer1;
+    Board boardPlayer2;
+    //boardPlayer1.print();
+    boardPlayer1.insertShip(0, 1, 0, 3);
+    boardPlayer1.print();
+
+    cout << endl;
+
+    boardPlayer2.insertShip(1, 4, 5, 4);
+    boardPlayer2.print();
+
+    // 
+    boardPlayer2.shoot(2, 4);
+    boardPlayer2.shoot(2, 5);
+    boardPlayer2.checkIfHit();
+
+    boardPlayer2.print();
+
+    boardPlayer2.shoot(7, 8);
+    boardPlayer2.checkIfHit();
+    boardPlayer2.print();
+
+    // TODO:
+    // Loop di inserimento delle navi per i due giocatori
+    // for (0 5) cin int; insertShip
+    // Potenziare l'espressività del print() board
+    // label string argomento
+    // Alternanza player per sparare
+
+    //
 }

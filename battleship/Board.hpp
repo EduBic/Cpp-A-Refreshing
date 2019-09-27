@@ -30,7 +30,7 @@ class Board
 public:
     Board()
     {
-        for(int x = 0; x < 10; x++)
+        for (int x = 0; x < 10; x++)
         {
             for (int y = 0; y < 10; ++y)
             {
@@ -60,33 +60,91 @@ public:
         }
     }
     
+    // coordinates included
     bool insertShip(int x1, int y1, int x2, int y2)
     {
         if (y1 == y2) {
             int xMax = max(x1, x2);
-            for (int x = min(x1, x2); x <= xMax; x++)
+            int xMin = min(x1, x2);
+
+            if (isShipSizeAccepted(xMax, xMin))
             {
-                board[y1][x] = 's';
+                for (int x = xMin; x <= xMax; x++)
+                {
+                    board[y1][x] = 'o';
+                }
+                return true;
             }
         }
         else if (x1 == x2) 
         {
             int yMax = max(y1, y2);
-            for (int y = min(y1, y2); y <= yMax; y++)
+            int yMin = min(y1, y2);
+            // check per controllare se la nave è piazzabile o meno
+            if (isShipSizeAccepted(yMax, yMin))
             {
-                board[y][x1] = 's';
-            }
-        }
-        else {
-            return false;
+                for (int y = yMin; y <= yMax; y++)
+                {
+                    board[y][x1] = 'o';
+                }
+                return true;
+            }    
         }
 
-        return true;
+        cout << "DEBUG: Ship Not Valid, select other coordinate for ship placement" 
+            << endl; 
+
+        return false;
+    }
+
+    //  imput compresi perchè stiamo ragionando a celle
+    bool isShipSizeAccepted(int max, int min)
+    {
+        return max - min > 0 && max - min < 5;
+    }
+    //  submarine = 3
+    //  incrociatore = 3
+    //  cacciatorpediniere = 2
+    //  corazzate = 4
+    //  portaerei = 5
+    
+    //  implementare eventuale piazzamento a scelta per tipo di nave
+
+    void shoot(int x, int y)
+    {
+        if (board[y][x] == '~')
+        {
+            board[y][x] = 'w';
+        }
+        else if (board[y][x] == 'o')
+        {
+            board[y][x] = 'x';
+        }
+        else 
+        {
+            cout << "DEBUG: Already hitted coordinates" << endl;
+        }
+    }
+
+    void checkIfHit()
+    {
+        Board boardTest(*this);
+        // hideWaterAndShips
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 10; ++y)
+            {
+                if (boardTest.board[x][y] == '~' || boardTest.board[x][y] == 'o')
+                    boardTest.board[x][y] = '?';
+            }
+        }
+
+        boardTest.print();
     }
 
 private:
 
-    char letters[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
-    int numbers[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    const char letters[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+    const int numbers[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     char board[10][10];
 };
