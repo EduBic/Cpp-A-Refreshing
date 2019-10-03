@@ -88,7 +88,5 @@ int main()
     // (done) for (0 5) cin int; insertShip (riga 31)(fix need for ship over another ship placement)
     // Potenziare l'espressività del print() board
     // label string argomento
-    // (done) Alternanza player per sparare (riga 74)
-
-    //
+    // (done) Alternanza player per sparare (riga 72)
 }
