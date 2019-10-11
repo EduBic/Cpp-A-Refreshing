@@ -39,7 +39,7 @@ public:
         }
     }
 
-    void print()
+    void print() const
     {
         cout << "  ";
         for (int x = 0; x < 10; x++)

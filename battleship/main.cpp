@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "Board.hpp"
+#include "GameState.hpp"
 
 using namespace std;
 
@@ -51,50 +52,60 @@ void initBoardsWithShips(Board& boardPlayer1, Board& boardPlayer2)
     }
 }
 
-int convertInput(char c)
+
+// Return index of the input in the possibleInputs array 
+int convertInput(const string& input, const string (&possibleInputs)[10])
+{   
+    cout << "DEBUG: input = " << input << endl;
+
+    for (int i = 0; i < 10; ++i)
+    {
+        if (input == possibleInputs[i])
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+
+
+void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, const Board& boardPlayer)
 {
-    int i = 0;
-    if(c == '0')
+    const string LETTERS_IN[10] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    const string NUMBERS_IN[10] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+                    
+    cin >> userInput;
+    if (userInput == ":m")
     {
-        i = 0;
+        gameStatus = MENU;
     }
-    else if(c == '1')
+    else
     {
-        i = 1;
+        string charX = string(1, userInput[0]);  // letter
+        string charY = string(1, userInput[1]);  // number
+
+        if (userInput.size() == 3)
+        {
+            charY.append(1, userInput[2]);
+        }
+
+        int x = convertInput(charX, LETTERS_IN);
+        int y = convertInput(charY, NUMBERS_IN);
+
+        if (x != -1 && y != -1)
+        {
+            boardPlayer.print();
+
+            boardEnemy.shoot(x, y);
+            boardEnemy.checkIfHit();
+        }
+        else
+        {
+            cout << "Input wrong!" << endl;
+        }
     }
-    else if(c == '2')
-    {
-        i = 2;
-    }
-    else if(c == '3')
-    {
-        i = 3;
-    }
-    else if(c == '4')
-    {
-        i = 4;
-    }
-    else if(c == '5')
-    {
-        i = 5;
-    }
-    else if(c == '6')
-    {
-        i = 6;
-    }
-    else if(c == '7')
-    {
-        i = 7;
-    }
-    else if(c == '8')
-    {
-        i = 8;
-    }
-    else if(c == '9')
-    {
-        i = 9;
-    }
-return i;
 }
 
 void test_initBoardWithShips(Board& ioBoard)
@@ -120,25 +131,25 @@ int main()
 
     // Displacement ships
 
+
     Board boardPlayer1;
     Board boardPlayer2;
-    //  0 = menu
-    //  1 = game
-    int gameStatus = 0;
-    char userInput;
-    while(true)
+
+    GameState gameStatus = MENU;
+    string userInput;
+
+    // Game loop
+    while (gameStatus != EXIT)
     {
         // menu flow
-        cout << "Press s for start..." << endl;
+        cout << "Insert :s for start..." << endl
+             << "or :x for exit the game." << endl;
         cin >> userInput;
-        if(userInput == 's')
+        if (userInput == ":s")
         {
-            gameStatus++;
-        }
+            gameStatus = GAME;
+            // game flow
 
-        // game flow
-        while(gameStatus == 1)
-        {
             // boardPlayer1.print();
             // // initBoardsWithShips(boardPlayer1, boardPlayer2);
             test_initBoardWithShips(boardPlayer1);
@@ -147,41 +158,35 @@ int main()
             // boardPlayer2.print();
 
             // 
-            while(gameStatus == 1)
+            int player = 1;
+
+            while (gameStatus == GAME)
             {
-                cout << "Player1 enter shoot coordinate: ";
-                // modify to take imput coordinate for shoot
-                char charX, charY;
-                cin >> charX;
-                cin >> charY;
-                // loop caused by int variable confronted with char need a fix
-                if(charX == 'h'|| charY == 'h')
+                if(player == 1)
                 {
-                    gameStatus--;
+                    cout << "Player1 enter shoot coordinate: ";
+                    playerTurn(userInput, gameStatus, boardPlayer2, boardPlayer1);
+                    player++;
                 }
                 else
                 {
-                int x = convertInput(charX);
-                int y = convertInput(charY);
-                 // boardPlayer1.shoot(x, y);
-                 // boardPlayer1.checkIfHit();
-                 // boardPlayer1.print();
-
-                 boardPlayer2.shoot(x, y);
-                 boardPlayer2.checkIfHit();
-                 boardPlayer2.print();
+                    cout << "Player2 enter shoot coordinate: ";
+                    playerTurn(userInput,gameStatus, boardPlayer1, boardPlayer2);
+                    player--;
                 }
             }
         }
+        else if (userInput == ":x")
+        {
+            gameStatus = EXIT;
+        }
     }
     // TODO:
-    // (done) Loop di inserimento delle navi per i due giocatori (riga 29)
-    // (done) for (0 5) cin int; insertShip (riga 31)(fix need for ship over another ship placement)
-    // Potenziare l'espressività del print() board
+    // Potenziare l'espressività del print() board (fixare il 10)
     // label string argomento
-    // (done) Alternanza player per sparare (riga 72)
+    // If shoot is an hit, the player plays the next turn 
+    // Print BATTLESHIP in ascii art in MENU flow (might be cool)
 
     // BUG: overlap of ship in the insertion
-    
-    // BUG: if you enter any imput with char different from h in the board it will become int 0
+    // BUG: go to menu don't refresh players board
 }
