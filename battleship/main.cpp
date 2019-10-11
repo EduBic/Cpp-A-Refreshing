@@ -51,6 +51,52 @@ void initBoardsWithShips(Board& boardPlayer1, Board& boardPlayer2)
     }
 }
 
+int convertInput(char c)
+{
+    int i = 0;
+    if(c == '0')
+    {
+        i = 0;
+    }
+    else if(c == '1')
+    {
+        i = 1;
+    }
+    else if(c == '2')
+    {
+        i = 2;
+    }
+    else if(c == '3')
+    {
+        i = 3;
+    }
+    else if(c == '4')
+    {
+        i = 4;
+    }
+    else if(c == '5')
+    {
+        i = 5;
+    }
+    else if(c == '6')
+    {
+        i = 6;
+    }
+    else if(c == '7')
+    {
+        i = 7;
+    }
+    else if(c == '8')
+    {
+        i = 8;
+    }
+    else if(c == '9')
+    {
+        i = 9;
+    }
+return i;
+}
+
 void test_initBoardWithShips(Board& ioBoard)
 {
     ioBoard.insertShip(2, 2, 5, 2);
@@ -95,9 +141,9 @@ int main()
         {
             // boardPlayer1.print();
             // // initBoardsWithShips(boardPlayer1, boardPlayer2);
-            // test_initBoardWithShips(boardPlayer1);
+            test_initBoardWithShips(boardPlayer1);
             // boardPlayer1.print();
-            // test_initBoardWithShips(boardPlayer2);
+            test_initBoardWithShips(boardPlayer2);
             // boardPlayer2.print();
 
             // 
@@ -105,27 +151,26 @@ int main()
             {
                 cout << "Player1 enter shoot coordinate: ";
                 // modify to take imput coordinate for shoot
-                char x, y;
-                cin >> x;
-                cin >> y;
+                char charX, charY;
+                cin >> charX;
+                cin >> charY;
                 // loop caused by int variable confronted with char need a fix
-                if(x == 'h'|| y == 'h')
+                if(charX == 'h'|| charY == 'h')
                 {
                     gameStatus--;
                 }
-                
-                // boardPlayer1.shoot(x, y);
-                // boardPlayer1.checkIfHit();
-                // boardPlayer1.print();
+                else
+                {
+                int x = convertInput(charX);
+                int y = convertInput(charY);
+                 // boardPlayer1.shoot(x, y);
+                 // boardPlayer1.checkIfHit();
+                 // boardPlayer1.print();
 
-                // boardPlayer2.shoot(2, 4);
-                // boardPlayer2.checkIfHit();
-
-                // boardPlayer2.print();
-
-                // boardPlayer2.shoot(7, 8);
-                // boardPlayer2.checkIfHit();
-                // boardPlayer2.print();
+                 boardPlayer2.shoot(x, y);
+                 boardPlayer2.checkIfHit();
+                 boardPlayer2.print();
+                }
             }
         }
     }
@@ -137,4 +182,6 @@ int main()
     // (done) Alternanza player per sparare (riga 72)
 
     // BUG: overlap of ship in the insertion
+    
+    // BUG: if you enter any imput with char different from h in the board it will become int 0
 }
