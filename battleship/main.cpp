@@ -71,7 +71,7 @@ int convertInput(const string& input, const string (&possibleInputs)[10])
 
 
 
-void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, const Board& boardPlayer)
+void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, const Board& boardPlayer, int& player)
 {
     const string LETTERS_IN[10] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
     const string NUMBERS_IN[10] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -80,6 +80,10 @@ void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, cons
     if (userInput == ":m")
     {
         gameStatus = MENU;
+    }
+    else if (userInput.size() > 0 && userInput[0] == ':') 
+    {
+        cout << "HELP: Press ':m' for return to menu" << endl;
     }
     else
     {
@@ -98,7 +102,16 @@ void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, cons
         {
             boardPlayer.print();
 
-            boardEnemy.shoot(x, y);
+            bool hit = boardEnemy.shoot(x, y);
+            if (player == 1 && !hit) 
+            {
+                player++;
+            } 
+            else if (player == 2 && !hit)
+            {
+                player--;
+            }
+            
             boardEnemy.checkIfHit();
         }
         else
@@ -111,7 +124,7 @@ void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, cons
 void test_initBoardWithShips(Board& ioBoard)
 {
     ioBoard.insertShip(2, 2, 5, 2);
-    ioBoard.insertShip(9, 8, 9, 5);
+    //ioBoard.insertShip(9, 8, 9, 5);
 }
 
 int main() 
@@ -132,8 +145,6 @@ int main()
     // Displacement ships
 
 
-    Board boardPlayer1;
-    Board boardPlayer2;
 
     GameState gameStatus = MENU;
     string userInput;
@@ -142,12 +153,23 @@ int main()
     while (gameStatus != EXIT)
     {
         // menu flow
-        cout << "Insert :s for start..." << endl
-             << "or :x for exit the game." << endl;
+        cout << "______       _   _   _           _     _       " << endl <<      
+                "| ___ \\     | | | | | |         | |   (_)      " << endl <<
+                "| |_/ / __ _| |_| |_| | ___  ___| |__  _ _ __  " << endl <<
+                "| ___ \\/ _` | __| __| |/ _ \\/ __| '_ \\| | '_ \\ " << endl <<
+                "| |_/ / (_| | |_| |_| |  __/\\__ \\ | | | | |_) |" << endl <<
+                "\\____/ \\__,_|\\__|\\__|_|\\___||___/_| |_|_| .__/ " << endl <<
+                "                                        | |    " << endl <<
+                "                                        |_|    " << endl;
+
+        cout << "\t" << "Insert :s for start..."   << endl 
+             << "\t" << "or :x for exit the game." << endl;
         cin >> userInput;
         if (userInput == ":s")
         {
             gameStatus = GAME;
+            Board boardPlayer1;
+            Board boardPlayer2;
             // game flow
 
             // boardPlayer1.print();
@@ -164,15 +186,23 @@ int main()
             {
                 if(player == 1)
                 {
-                    cout << "Player1 enter shoot coordinate: ";
-                    playerTurn(userInput, gameStatus, boardPlayer2, boardPlayer1);
-                    player++;
+                    cout << "Player1, enter shoot coordinate: ";
+                    playerTurn(userInput, gameStatus, boardPlayer2, boardPlayer1, player);
+                    if(boardPlayer2.checkIfWin())
+                    {
+                        cout << "\tPlayer1 WINS" << endl;
+                        gameStatus = MENU;
+                    }
                 }
                 else
                 {
-                    cout << "Player2 enter shoot coordinate: ";
-                    playerTurn(userInput,gameStatus, boardPlayer1, boardPlayer2);
-                    player--;
+                    cout << "Player2, enter shoot coordinate: ";
+                    playerTurn(userInput, gameStatus, boardPlayer1, boardPlayer2, player);
+                    if(boardPlayer1.checkIfWin())
+                    {
+                        cout << "\tPlayer2 WINS" << endl;
+                        gameStatus = MENU;
+                    }
                 }
             }
         }
@@ -184,8 +214,9 @@ int main()
     // TODO:
     // Potenziare l'espressività del print() board (fixare il 10)
     // label string argomento
-    // If shoot is an hit, the player plays the next turn 
-    // Print BATTLESHIP in ascii art in MENU flow (might be cool)
+    // If shoot is an hit, the player plays the next turn
+    // Place ships phase
+    // Save match, restart etc.
 
     // BUG: overlap of ship in the insertion
     // BUG: go to menu don't refresh players board

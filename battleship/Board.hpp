@@ -110,7 +110,7 @@ public:
     
     //  implementare eventuale piazzamento a scelta per tipo di nave
 
-    void shoot(int x, int y)
+    bool shoot(int x, int y)
     {
         if (board[y][x] == '~')
         {
@@ -119,14 +119,16 @@ public:
         else if (board[y][x] == 'o')
         {
             board[y][x] = 'x';
+            return true;
         }
         else 
         {
             cout << "DEBUG: Already hitted coordinates" << endl;
         }
+        return false;
     }
 
-    void checkIfHit()
+    void checkIfHit() const
     {
         Board boardTest(*this);
         // hideWaterAndShips
@@ -135,11 +137,28 @@ public:
             for (int y = 0; y < 10; ++y)
             {
                 if (boardTest.board[x][y] == '~' || boardTest.board[x][y] == 'o')
+                {
                     boardTest.board[x][y] = '?';
+                }
             }
         }
 
         boardTest.print();
+    }
+
+    bool checkIfWin() const
+    {
+        for (int x = 0; x < 10; x++)
+        {
+            for (int y = 0; y < 10; ++y)
+            {
+                if (board[x][y] == 'o')
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 private:
