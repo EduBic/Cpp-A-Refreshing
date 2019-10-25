@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 
 using namespace std;
 
@@ -44,17 +45,17 @@ public:
         cout << "  ";
         for (int x = 0; x < 10; x++)
         {
-            cout << " " << letters[x];
+            cout << " " << setw(2) << letters[x];
         }
         cout << endl;
 
         
         for (int y = 0; y < 10; y++)
         {
-            cout << " " << numbers[y] << " ";
+            cout << setw(2) << numbers[y] << " " ;
             for (int x = 0; x < 10; ++x)
             {
-                cout << board[y][x] << " ";
+                cout << setw(2) << board[y][x] << " ";
             }
             cout << endl;
         }
