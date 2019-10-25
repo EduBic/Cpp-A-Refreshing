@@ -3,55 +3,9 @@
 
 #include "Board.hpp"
 #include "GameState.hpp"
+#include "Coordinate.hpp"
 
 using namespace std;
-
-
-void initBoardsWithShips(Board& boardPlayer1, Board& boardPlayer2)
-{
-    for(int t = 1; t <= 2; t++)
-    {
-        for(int p = 0; p < 5; p++)
-        {
-            if(t == 1)
-            {
-                cout << "Player 1 ";
-            }
-            else
-            {
-                cout << "Player 2 ";
-            }
-            // cout migliorabile
-            cout << "enter coordinate for ship placement" << endl;
-            cout << "Enter first x coordinate: ";
-            int x = 0;
-            // cin >> x;
-            cout << "Enter first y coordinate: ";
-            int y = 0;
-            // cin >> y;
-            cout << "Enter second x coordinate: ";
-            int x2 = 0;
-            // cin >> x2;
-            cout << "Enter second y coordinate: ";
-            int y2 = 0;
-            // cin >> y2;
-            
-            if (t == 1)
-            {
-                boardPlayer1.insertShip(x, y, x2, y2);
-                boardPlayer1.print();
-                cout << endl;
-            }
-            else
-            {
-                boardPlayer2.insertShip(x, y, x2, y2);
-                boardPlayer2.print();
-                cout << endl;
-            }
-        }
-    }
-}
-
 
 // Return index of the input in the possibleInputs array 
 int convertInput(const string& input, const string (&possibleInputs)[10])
@@ -69,13 +23,10 @@ int convertInput(const string& input, const string (&possibleInputs)[10])
     return -1;
 }
 
-
-
-void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, const Board& boardPlayer, int& player)
-{
-    const string LETTERS_IN[10] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-    const string NUMBERS_IN[10] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-                    
+Coordinate playerTurn(GameState& gameStatus)
+{                   
+    string userInput;
+    
     cin >> userInput;
     if (userInput == ":m")
     {
@@ -87,6 +38,9 @@ void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, cons
     }
     else
     {
+        const string LETTERS_IN[10] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+        const string NUMBERS_IN[10] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+
         string charX = string(1, userInput[0]);  // letter
         string charY = string(1, userInput[1]);  // number
 
@@ -100,30 +54,94 @@ void playerTurn(string userInput, GameState& gameStatus, Board& boardEnemy, cons
 
         if (x != -1 && y != -1)
         {
-            boardPlayer.print();
-
-            bool hit = boardEnemy.shoot(x, y);
-            if (player == 1 && !hit) 
-            {
-                player++;
-            } 
-            else if (player == 2 && !hit)
-            {
-                player--;
-            }
-            
-            boardEnemy.checkIfHit();
+            return Coordinate(x, y);
         }
         else
         {
             cout << "Input wrong!" << endl;
         }
     }
+
+    return Coordinate(-1, -1);
 }
+
+
+void initBoardsWithShips(GameState& gameStatus, Board& boardPlayer1, Board& boardPlayer2)
+{
+    const int shipNumber = 5;
+    const string shipName[shipNumber] = {"Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"};
+    const int shipSize[shipNumber] = {5, 4, 3, 3, 2};
+
+    for (int t = 1; t <= 2 && gameStatus == STARTUP; t++)
+    {
+        if (t == 1)
+            boardPlayer1.print();
+        else 
+            boardPlayer2.print();
+
+        for (int p = 0; p < shipNumber && gameStatus == STARTUP;)
+        {
+            cout << "Player " << t << " ";
+            
+            // cout migliorabile
+            cout << "enter coordinate for " 
+                 << shipName[p] << " (size " << shipSize[p] << ") "
+                 << "placement" << endl;
+            
+            cout << "Enter begin coordinate: ";
+            Coordinate begin = playerTurn(gameStatus);
+            // optimize: exit if gamestatus changes
+            if (gameStatus != STARTUP) return;
+            
+            cout << "Enter end coordinate: ";
+            Coordinate end = playerTurn(gameStatus);
+            // optimize: exit if gamestatus changes
+            if (gameStatus != STARTUP) return;
+            
+            if (t == 1)
+            {
+                if (boardPlayer1.insertShip(begin, end, shipSize[p]))
+                {
+                    p++;
+                }
+                boardPlayer1.print();
+            }
+            else
+            {
+                if (boardPlayer2.insertShip(begin, end, shipSize[p])) 
+                {
+                    p++;
+                }
+                boardPlayer2.print();
+            }
+            cout << endl;
+        }
+    }
+}
+
+
+void shootingPhase(GameState& gameStatus, Board& boardEnemy, const Board& boardPlayer, int& player)
+{
+    Coordinate coord = playerTurn(gameStatus);
+    boardPlayer.print();
+
+    bool hit = boardEnemy.shoot(coord.x, coord.y);
+    if (player == 1 && !hit) 
+    {
+        player++;
+    } 
+    else if (player == 2 && !hit)
+    {
+        player--;
+    }
+    
+    boardEnemy.checkIfHit();
+}
+
 
 void test_initBoardWithShips(Board& ioBoard)
 {
-    ioBoard.insertShip(2, 2, 5, 2);
+    ioBoard.insertShip(Coordinate(2, 2), Coordinate(5, 2), 3);
     //ioBoard.insertShip(9, 8, 9, 5);
 }
 
@@ -167,27 +185,26 @@ int main()
         cin >> userInput;
         if (userInput == ":s")
         {
-            gameStatus = GAME;
+            // startup flow
+            gameStatus = STARTUP;
             Board boardPlayer1;
             Board boardPlayer2;
+            
+            initBoardsWithShips(gameStatus, boardPlayer1, boardPlayer2);
+            
             // game flow
-
-            // boardPlayer1.print();
-            // // initBoardsWithShips(boardPlayer1, boardPlayer2);
-            test_initBoardWithShips(boardPlayer1);
-            // boardPlayer1.print();
-            test_initBoardWithShips(boardPlayer2);
-            // boardPlayer2.print();
-
-            // 
+            if (gameStatus == STARTUP)
+            {
+                gameStatus = GAME;
+            }
             int player = 1;
 
             while (gameStatus == GAME)
             {
-                if(player == 1)
+                if (player == 1)
                 {
                     cout << "Player1, enter shoot coordinate: ";
-                    playerTurn(userInput, gameStatus, boardPlayer2, boardPlayer1, player);
+                    shootingPhase(gameStatus, boardPlayer2, boardPlayer1, player);
                     if(boardPlayer2.checkIfWin())
                     {
                         cout << "\tPlayer1 WINS" << endl;
@@ -197,7 +214,7 @@ int main()
                 else
                 {
                     cout << "Player2, enter shoot coordinate: ";
-                    playerTurn(userInput, gameStatus, boardPlayer1, boardPlayer2, player);
+                    shootingPhase(gameStatus, boardPlayer1, boardPlayer2, player);
                     if(boardPlayer1.checkIfWin())
                     {
                         cout << "\tPlayer2 WINS" << endl;
@@ -212,12 +229,9 @@ int main()
         }
     }
     // TODO:
-    // Potenziare l'espressività del print() board (fixare il 10)
     // label string argomento
-    // If shoot is an hit, the player plays the next turn
-    // Place ships phase
     // Save match, restart etc.
+    // support pause state
 
     // BUG: overlap of ship in the insertion
-    // BUG: go to menu don't refresh players board
 }

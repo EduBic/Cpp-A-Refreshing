@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <iomanip>
 
+#include "Coordinate.hpp"
+
 using namespace std;
 
 /*
@@ -62,14 +64,20 @@ public:
     }
     
     // coordinates included
-    bool insertShip(int x1, int y1, int x2, int y2)
+    bool insertShip(const Coordinate& begin, const Coordinate& end, int size)
     {
+        int x1 = begin.x;
+        int y1 = begin.y;
+        int x2 = end.x;
+        int y2 = end.y;
+        
         if (y1 == y2) {
             int xMax = max(x1, x2);
             int xMin = min(x1, x2);
 
-            if (isShipSizeAccepted(xMax, xMin))
+            if (isShipSizeAccepted(xMax, xMin, size))
             {
+                cout << "DEBUG: Ship accepted!" << endl;
                 for (int x = xMin; x <= xMax; x++)
                 {
                     board[y1][x] = 'o';
@@ -82,8 +90,9 @@ public:
             int yMax = max(y1, y2);
             int yMin = min(y1, y2);
             // check per controllare se la nave è piazzabile o meno
-            if (isShipSizeAccepted(yMax, yMin))
+            if (isShipSizeAccepted(yMax, yMin, size))
             {
+                cout << "DEBUG: Ship accepted!" << endl;
                 for (int y = yMin; y <= yMax; y++)
                 {
                     board[y][x1] = 'o';
@@ -99,9 +108,9 @@ public:
     }
 
     //  imput compresi perchè stiamo ragionando a celle
-    bool isShipSizeAccepted(int max, int min)
+    bool isShipSizeAccepted(int max, int min, int size)
     {
-        return max - min > 0 && max - min < 5;
+        return max - min == size;
     }
     //  submarine = 3
     //  incrociatore = 3
