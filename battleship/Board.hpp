@@ -63,6 +63,25 @@ public:
         }
     }
     
+    bool isOverlappingShips(int max, int min, int constant, bool isHorizontal) const
+    {
+        for (int i = min; i <= max; i++)
+        {
+            if (isHorizontal && board[constant][i] == 'o')
+            {
+                //cout << "DEBUG: overlap in coordinate (y, x): (" << constant << ", " << i << ")" << endl;
+                return true;
+            }
+            if (!isHorizontal && board[i][constant] == 'o')
+            {
+                //cout << "DEBUG: overlap in coordinate (y, x): (" << i << ", " << constant << ")" << endl;
+                return true;
+            }
+        }
+    
+        return false;
+    }
+
     // coordinates included
     bool insertShip(const Coordinate& begin, const Coordinate& end, int size)
     {
@@ -71,11 +90,12 @@ public:
         int x2 = end.x;
         int y2 = end.y;
         
-        if (y1 == y2) {
+        if (y1 == y2)
+        {
             int xMax = max(x1, x2);
             int xMin = min(x1, x2);
 
-            if (isShipSizeAccepted(xMax, xMin, size))
+            if (isShipSizeAccepted(xMax, xMin, size) && !isOverlappingShips(xMax, xMin, y1, true))
             {
                 cout << "DEBUG: Ship accepted!" << endl;
                 for (int x = xMin; x <= xMax; x++)
@@ -90,7 +110,7 @@ public:
             int yMax = max(y1, y2);
             int yMin = min(y1, y2);
             // check per controllare se la nave è piazzabile o meno
-            if (isShipSizeAccepted(yMax, yMin, size))
+            if (isShipSizeAccepted(yMax, yMin, size) && !isOverlappingShips(yMax, yMin, x1, false))
             {
                 cout << "DEBUG: Ship accepted!" << endl;
                 for (int y = yMin; y <= yMax; y++)
@@ -110,7 +130,7 @@ public:
     //  imput compresi perchè stiamo ragionando a celle
     bool isShipSizeAccepted(int max, int min, int size)
     {
-        return max - min == size;
+        return max - min == size - 1;
     }
     //  submarine = 3
     //  incrociatore = 3
