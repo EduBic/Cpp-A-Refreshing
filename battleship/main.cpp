@@ -232,6 +232,4 @@ int main()
     // label string argomento
     // Save match, restart etc.
     // support pause state
-
-    // BUG: overlap of ship in the insertion
 }
