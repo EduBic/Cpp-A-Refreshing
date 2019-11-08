@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "List.hpp"
 
@@ -34,30 +35,43 @@ int main()
     // size++;
 
     // Dynamic world
-    List list;
-    list.print();
+    List<string> list;
+    list.printAll();
     cout << endl;
 
     // add
     for (int i = 0; Status == ACTIVE; i++)
     {
-        cout << "Digit -1 to quit sequence" << endl;
+        cout << "Digit :q to quit sequence" << endl;
         cout << "Step " << i << endl;
-        int in;
+        string in;
         cin >> in;
-        if (in == -1)
+        if (in == ":q")
         {
             Status = QUIT;
+        }
+        else if (in == ":get")
+        {
+            int intIn;
+            cin >> intIn;
+            string res = list.get(intIn);
+            cout << "Value in " << intIn << " = " << res << endl;
+        }
+        else if (in == ":del")
+        {
+            string resDeleted = list.pop_back();
+            cout << "Deleted value = " << resDeleted << endl;
+            list.printAll();
         }
         else
         {
             list.add(in);
-            list.print();
+            list.printAll();
         }
     }
 
     cout << "END" << endl;
-    list.print();
+    list.printAll();
     cout << endl;
 
 }
