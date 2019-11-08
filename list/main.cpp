@@ -6,7 +6,12 @@ using namespace std;
 
 int main()
 {
-
+    enum ProgramStatus
+    {
+        ACTIVE = 0,
+        QUIT = 1,
+    };
+    ProgramStatus Status = ACTIVE;
     /*
         array 6 int
         [12, 43, 547, 764, 124, 324]
@@ -34,13 +39,21 @@ int main()
     cout << endl;
 
     // add
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; Status == ACTIVE; i++)
     {
+        cout << "Digit -1 to quit sequence" << endl;
         cout << "Step " << i << endl;
         int in;
         cin >> in;
-        list.add(in);
-        list.print();
+        if (in == -1)
+        {
+            Status = QUIT;
+        }
+        else
+        {
+            list.add(in);
+            list.print();
+        }
     }
 
     cout << "END" << endl;
