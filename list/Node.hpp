@@ -40,14 +40,18 @@ public:
     {
         if (next != nullptr)
         {
-            // TODO: if last but one
-            // if (next->next == nullptr)
-            // clean next of this node
-            // nextSaved = next;
-            // next = nullptr
-            // return nextSaved->pop_back()
-            return next->pop_back();
+            // if last but one
+            if (next->next == nullptr)
+            {
+                // clean next of this node
+                Node<T>* lastNodeSaved = next;
+                next = nullptr;
+                return lastNodeSaved;
+            }
+            // previous of last but one
+            return next->get_back();
         }
+        // one node in the list
         return this;
     }
 
@@ -71,4 +75,7 @@ public:
 private:
     T value;
     Node<T>* next;
+
+    template <class X>
+    friend class List;
 };

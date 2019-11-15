@@ -65,7 +65,7 @@ int main()
         }
         else
         {
-            list.add(in);
+            list.push_back(in);
             list.printAll();
         }
     }
