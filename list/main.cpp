@@ -54,7 +54,7 @@ int main()
         {
             int intIn;
             cin >> intIn;
-            string res = list.get(intIn);
+            string res = list.get_rec(intIn);
             cout << "Value in " << intIn << " = " << res << endl;
         }
         else if (in == ":del")

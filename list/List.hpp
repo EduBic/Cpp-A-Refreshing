@@ -46,7 +46,7 @@ public:
         _size++;
     }
 
-    T get(const int i) const
+    T get_rec(const int i) const
     {
         if (_first != nullptr) 
         {
@@ -58,8 +58,45 @@ public:
         }
     }
 
-    // TODO: pop_front
+    T get(const int i) const
+    {
+        // ->(int)->(int)->...->(int) nullptr
+        //     0      1    ...  size-1
+        //                              ↑
+        //                            cursor
+
+        Node<T>* cursor = _first;
+        int acc = 0;
+
+        while (cursor != nullptr)
+        {
+            if (i == acc) 
+            {
+                return cursor->value;
+            }
+
+            cursor = cursor->next;
+            acc++;                
+        }
+        return T();
+    }
+
+    // pop: remove an element
+    // front: first element
     // example: [2, 4, 65] => [4, 65]
+    T pop_front()
+    {
+        if (_first != nullptr)
+        {
+            Node<T>* nodeToDelete = _first;
+            _first = _first->next;
+            T valBackup = nodeToDelete->getValue();
+            delete nodeToDelete;
+            _size--;
+            return valBackup;
+        }
+        return T();
+    }
 
     T pop_back_rec()
     {
