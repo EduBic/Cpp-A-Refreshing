@@ -150,6 +150,37 @@ public:
         return T();
     }
 
+    T pop_index(const int value)
+    {   
+        if (_first != nullptr && value < _size)
+        {
+            Node<T>* lastNodeSaved = _first;
+            Node<T>* cursor = _first;
+
+            for (int v = 0; cursor->next != nullptr && v != value; v++)
+            {
+                // save always precedent to cursor
+                lastNodeSaved = cursor;
+                cursor = cursor->next;
+            }
+
+            if (cursor == _first)
+            {
+                _first = nullptr;
+            }
+            else 
+            {
+                lastNodeSaved->next = cursor->next;
+            }
+
+            T valBackup = cursor->getValue();
+            delete cursor;
+            _size--;
+            return valBackup;
+        }
+        return T();
+    }
+
     void printAll()
     {
         cout << "[";
