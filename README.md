@@ -5,6 +5,10 @@ Little and pretty programs made for learn all the shades of the C++ programming 
 - The C++ programming language
 - primitive types: int, char
 - Functions and variables, arrays
+- Function:
+    - declaration: returnType nameFunction(inputType varInput)
+    - implementation: { ...code here... }
+    - call: nameFunction(varInput);
 - Memory type:
     - Heap
     - Stack: How doas stack work?
